@@ -18,3 +18,4 @@ Text-to-Speech
 Speaker Output
         ↓
 LCD Face Expression
+```
