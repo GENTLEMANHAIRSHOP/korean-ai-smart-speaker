@@ -1,6 +1,8 @@
 import os
 import time
 
+import google.generativeai as genai
+
 """
 Korean AI Smart Speaker
 
@@ -9,7 +11,7 @@ Korean AI Smart Speaker
 스마트 스피커의 기본 흐름을 확인합니다.
 """
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 HOTWORD = "하이 문규"
 
 
@@ -29,13 +31,19 @@ def listen_to_user() -> str:
 
 def generate_ai_response(question: str) -> str:
     """
-    AI 응답 생성 부분입니다.
-    현재는 테스트용 응답을 반환합니다.
+    Gemini API를 사용해 AI 응답을 생성합니다.
+    API 키가 없으면 테스트 응답을 반환합니다.
     """
-    if not OPENAI_API_KEY:
-        return "OPENAI_API_KEY가 설정되지 않았습니다. 현재는 테스트 응답입니다."
+    if not GEMINI_API_KEY:
+        return "GEMINI_API_KEY가 설정되지 않았습니다. 현재는 테스트 응답입니다."
 
-    return f"'{question}'에 대한 AI 응답을 생성하는 부분입니다."
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(question)
+        return response.text
+    except Exception as error:
+        return f"Gemini API 응답 생성 중 오류가 발생했습니다: {error}"
 
 
 def speak_response(response: str):
@@ -65,6 +73,7 @@ def show_face_expression(expression: str):
 def main():
     print("Korean AI Smart Speaker 시작")
     print(f"호출어: {HOTWORD}")
+    print("사용 AI: Gemini API")
     print("종료하려면 exit 입력")
 
     show_face_expression("idle")
