@@ -10,13 +10,14 @@ Korean AI Smart Speaker
 """
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+HOTWORD = "하이 문규"
 
 
 def detect_hotword(user_input: str) -> bool:
     """
-    호출어 '블스'가 포함되어 있는지 확인합니다.
+    호출어 '하이 문규'가 포함되어 있는지 확인합니다.
     """
-    return "블스" in user_input
+    return HOTWORD in user_input
 
 
 def listen_to_user() -> str:
@@ -63,7 +64,7 @@ def show_face_expression(expression: str):
 
 def main():
     print("Korean AI Smart Speaker 시작")
-    print("호출어: 블스")
+    print(f"호출어: {HOTWORD}")
     print("종료하려면 exit 입력")
 
     show_face_expression("idle")
